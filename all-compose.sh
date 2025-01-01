@@ -15,6 +15,7 @@ compose_files=(
   "compose-goofyn.yml"
   "compose-mcserver.yml"
   "compose-gitea.yml"
+  "compose-pihole.yml"
 )
 
 # Arguments à passer à la commande docker compose
