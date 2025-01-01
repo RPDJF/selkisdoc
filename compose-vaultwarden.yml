@@ -1,0 +1,25 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: always
+    env_file:
+      - ./conf/vaultwarden/.env
+    labels:
+      - "com.centurylinklabs.watchtower.stop-signal=SIGHUP"
+      - "traefik.enable=true"
+      - "traefik.http.routers.vaultwarden.rule=Host(`vault.ruinformatique.ch`) || Host(`vault.ruinformatique.lan`)"
+      - "traefik.http.routers.vaultwarden.tls=true"
+      - "traefik.http.routers.vaultwarden.middlewares=vaultwarden-replacepath"
+      - "traefik.http.middlewares.vaultwarden-replacepath.replacepathregex.regex=^/admin/(.*)"
+      - "traefik.http.middlewares.vaultwarden-replacepath.replacepathregex.replacement=/$1"
+
+    volumes:
+      - /data/containers/vaultwarden/vw-data:/data
+    networks:
+
+      - reverse-proxy
+      
+networks:
+  reverse-proxy:
+    external: true

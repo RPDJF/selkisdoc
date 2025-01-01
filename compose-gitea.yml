@@ -1,0 +1,22 @@
+services:
+  gitea:
+    image: gitea/gitea:latest
+    container_name: gitea
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /data/containers/gitea/:/data
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gitea.rule=Host(`git.ruinformatique.ch`) || Host(`git.ruinfo.ch`)"
+      - "traefik.http.routers.gitea.tls=true"
+      - "traefik.http.services.gitea.loadbalancer.server.port=3000"
+      - "traefik.http.routers.gitea.entrypoints=websecure"
+      - "com.centurylinklabs.watchtower.stop-signal=SIGHUP"
+    networks:
+      - reverse-proxy
+    ports:
+      - "222:22"
+networks:
+  reverse-proxy:
+    external: true

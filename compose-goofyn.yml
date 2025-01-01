@@ -1,0 +1,46 @@
+services:
+  main:
+    labels:
+      - "com.centurylinklabs.watchtower.stop-signal=SIGHUP"
+    image: rpdjf/goofyn:nightly
+    container_name: goofyn
+    depends_on:
+      - mongodb
+    environment:
+      MONGO_USERNAME: root
+      MONGO_PASSWORD: root
+      MONGO_DB: goofyn
+      MONGO_URI: mongodb://goofyn-mongodb:27017
+        #SCRIPT: firestore2mongo.js # only if using firestore2mongo script
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /data/containers/goofyn/.env:/usr/src/app/.env # can be setup in environment variables instead
+        #- /data/containers/goofyn/firebase-key.json:/usr/src/app/config/firebase-key.json # only if using firestore2mongo script
+    restart: always
+  mongodb:
+    labels:
+      - "com.centurylinklabs.watchtower.stop-signal=SIGHUP"
+    image: mongo:latest
+    container_name: goofyn-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: goofyn
+      MONGO_PORT: 27017
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /data/containers/goofyn/mongo-data:/data/db
+  dashboard:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.goofyn-dashboard.rule=Host(`goofyn.ruinformatique.ch`) || Host(`goofyn.ruinfo.ch`)"
+      - "traefik.http.routers.goofyn-dashboard.tls=true"
+    build: /home/docker/goofyn-dashboard
+    container_name: goofyn-dashboard
+    restart: always
+    networks:
+      - reverse-proxy
+networks:
+  reverse-proxy:
+    external: true

@@ -1,0 +1,14 @@
+services: 
+  watchtower:     
+    image: containrrr/watchtower
+    container_name: watchtower 
+    restart: always 
+    env_file:
+      - ./conf/watchtower/.env
+    environment: 
+      WATCHTOWER_SCHEDULE: "0 30 * * * *" 
+      TZ: "Europe/Zurich "
+      WATCHTOWER_CLEANUP: "true" 
+      WATCHTOWER_NOTIFICATIONS: "email" 
+    volumes: 
+      - /var/run/docker.sock:/var/run/docker.sock

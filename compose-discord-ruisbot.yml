@@ -1,0 +1,21 @@
+services:
+  nodejs:
+    container_name: discord-ruisbot
+    image: rpdjf/discord-ruisbot:latest
+    labels:
+      - "com.centurylinklabs.watchtower.stop-signal=SIGHUP"
+      - "traefik.enable=true"
+      - "traefik.http.routers.ruisbot.rule=Host(`ruisbotwebhook.ruinformatique.ch`)"
+      - "traefik.http.routers.ruisbot.tls=true"
+    volumes:
+      - /data/containers/discord-ruisbot/.env:/usr/src/app/.env # create your own .env file using env.example
+      - /data/containers/discord-ruisbot/firebase-adminsdk-credential.json:/usr/src/app/config/firebase-adminsdk-credential.json # download it from your firebase console
+    environment:
+      - TZ=Europe/Zurich
+    restart: always
+    networks:
+      - reverse-proxy
+
+networks:
+  reverse-proxy:
+    external: true
