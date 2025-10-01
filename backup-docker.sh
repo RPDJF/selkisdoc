@@ -9,3 +9,7 @@ chmod o-rx $dest
 chown docker:docker $dest
 
 echo "Backup completed successfully. Archive created at: $dest"
+
+echo "Cleaning old backups"
+
+exec /home/docker/infrastructure/backup-rotation.sh
