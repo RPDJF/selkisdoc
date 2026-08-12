@@ -1,3 +1,6 @@
 .env
-# compose-fv23 contains tokens inside, private repo
-compose-fv23.yml
+
+# Cloudflared configs/secrets
+cloudflared-config/*
+!cloudflared-config/folder-example.org.disabled/
+!cloudflared-config/folder-example.org.disabled/**

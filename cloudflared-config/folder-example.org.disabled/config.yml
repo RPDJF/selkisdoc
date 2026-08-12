@@ -1,0 +1,11 @@
+tunnel: YOUR-TUNNEL-ID
+credentials-file: /home/docker/infrastructure/cloudflared-config/folder-example/YOUR-TUNNEL-ID.json
+
+ingress:
+  - hostname: example.yourdomain.com
+    service: http://localhost:8080
+
+  - hostname: api.example.yourdomain.com
+    service: http://localhost:8081
+
+  - service: http_status:404

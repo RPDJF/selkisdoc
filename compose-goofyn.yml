@@ -17,10 +17,13 @@ services:
       - /data/containers/goofyn/.env:/usr/src/app/.env # can be setup in environment variables instead
         #- /data/containers/goofyn/firebase-key.json:/usr/src/app/config/firebase-key.json # only if using firestore2mongo script
     restart: always
+    ports:
+      - "8083:3042"
+
   mongodb:
     labels:
       - "com.centurylinklabs.watchtower.stop-signal=SIGHUP"
-    image: mongo:latest
+    image: mongo:7.0
     container_name: goofyn-mongodb
     restart: always
     environment:
@@ -31,16 +34,14 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /data/containers/goofyn/mongo-data:/data/db
+
   dashboard:
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.goofyn-dashboard.rule=Host(`goofyn.ruinformatique.ch`) || Host(`goofyn.ruinfo.ch`)"
-      - "traefik.http.routers.goofyn-dashboard.tls=true"
     build: /home/docker/goofyn-dashboard
     container_name: goofyn-dashboard
     restart: always
-    networks:
-      - reverse-proxy
+    ports:
+      - "8082:5000"
+
 networks:
-  reverse-proxy:
+  bw-services:
     external: true
