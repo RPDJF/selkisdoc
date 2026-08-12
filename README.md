@@ -137,7 +137,7 @@ Example:
 
 ```yaml
 tunnel: <TUNNEL-ID>
-credentials-file: /home/docker/infrastructure/cloudflared-config/example.org/<TUNNEL-ID>.json
+credentials-file: cloudflared-config/example.org/<TUNNEL-ID>.json
 
 ingress:
 

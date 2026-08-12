@@ -1,5 +1,5 @@
 tunnel: YOUR-TUNNEL-ID
-credentials-file: /home/docker/infrastructure/cloudflared-config/folder-example/YOUR-TUNNEL-ID.json
+credentials-file: cloudflared-config/folder-example/YOUR-TUNNEL-ID.json
 
 ingress:
   - hostname: example.yourdomain.com
